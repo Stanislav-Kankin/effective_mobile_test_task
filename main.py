@@ -19,11 +19,12 @@ def save_data(data: list, filename: str) -> None:
 
 # Функция для вывода данных постранично
 def display_data(data: list, page: int, page_size: int) -> None:
-    start = (page - 1)
+    start = (page - 1) * page_size
     end = start + page_size
-    for index, entry in enumerate(data[start:end], start=1):
+    for index, entry in enumerate(data[start:end], start=start+1):
         output_text = (
-            f"******************************************\n"
+            f"************************\n"
+            f"Страница: {page}\n"
             f"Номер записи: {index}\n"
             f"Фамилия: {entry['last_name']}\n"
             f"Имя: { entry['first_name']}\n"
@@ -88,10 +89,12 @@ def main() -> None:
             action = input('Следующая страница (n) или Предыдущая (p) или Выход (q): ')
             if action.lower() == 'n':
                 page += 1
+                display_data(data, page, page_size)
             elif action.lower() == 'p':
                 page -= 1
                 if page < 1:
                     page = 1
+                display_data(data, page, page_size)
             elif action.lower() == 'q':
                 break
         elif choice == '2':
