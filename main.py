@@ -98,8 +98,6 @@ def main() -> None:
                 page -= 1
                 if page < 1:
                     page = 1
-                else:
-                    print('ВЫ НА ПЕРВОЙ СТРАНИЦЕ!!!')
             elif action.lower() == 'q':
                 break
             else:
@@ -112,7 +110,7 @@ def main() -> None:
             save_data(data, filename)
         elif choice == '3':
             index = int(input('Введите номер записи для редактирования: '))
-            index -= 1
+            index -= 1  # Выравниваем чтобы была корректная обработка при работе со списком
             data = edit_entry(data, index)
             save_data(data, filename)
         elif choice == '4':
