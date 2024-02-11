@@ -23,7 +23,7 @@ def display_data(data: list, page: int, page_size: int) -> None:
     end = start + page_size
     for index, entry in enumerate(data[start:end], start=start+1):
         output_text = (
-            f"************************\n"
+            f"***************************************\n"
             f"Страница: {page}\n"
             f"Номер записи: {index}\n"
             f"Фамилия: {entry['last_name']}\n"
@@ -86,29 +86,53 @@ def main() -> None:
 
         if choice == '1':
             display_data(data, page, page_size)
-            action = input('Следующая страница (n) или Предыдущая (p) или Выход (q): ')
+            action = input(
+                'Следующая страница (n) или Предыдущая (p) или Выход (q): '
+                )
             if action.lower() == 'n':
-                page += 1
-                display_data(data, page, page_size)
+                if (page - 1 * page_size) < len(data):
+                    page += 1
+                else:
+                    print('ВЫ НА ПОСЛЕДНЕЙ СТРАНИЦЕ!!!')
             elif action.lower() == 'p':
                 page -= 1
                 if page < 1:
                     page = 1
-                display_data(data, page, page_size)
+                else:
+                    print('ВЫ НА ПЕРВОЙ СТРАНИЦЕ!!!')
             elif action.lower() == 'q':
                 break
+            else:
+                print('#############################################')
+                print('#!!!Некорректный ввод, попробуйте ещё раз!!!#')
+                print('#############################################')
+            display_data(data, page, page_size)
         elif choice == '2':
             data = add_entry(data)
             save_data(data, filename)
         elif choice == '3':
-            index = int(input('Введите номер записи для редактирования: ')) - 1
+            index = int(input('Введите номер записи для редактирования: '))
+            index -= 1
             data = edit_entry(data, index)
             save_data(data, filename)
         elif choice == '4':
             search_criteria = input('Ведите данные для поиска: ')
             results = search_entry(data, search_criteria)
             for entry in results:
-                print(entry)
+                output_text = (
+                    f"***************************************\n"
+                    f"Фамилия: {entry['last_name']}\n"
+                    f"Имя: { entry['first_name']}\n"
+                    f"Отчество: {entry['middle_name']}\n"
+                    f"Организация: {entry['organization']}\n"
+                    f"Рабочий телефон: {entry['work_phone']}\n"
+                    f"Личный (сотовый) телефон: {entry['personal_phone']}"
+                    )
+                print(output_text)
+        else:
+            print('#############################################')
+            print('#!!!Некорректный ввод, попробуйте ещё раз!!!#')
+            print('#############################################')
 
 
 if __name__ == "__main__":
